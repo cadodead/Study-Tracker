@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tracker | Retro Edition</title>
+    <link rel="stylesheet" href="studyTracker.css">
+</head>
+<body>
+
+    <form id="myForm">
+        <div class="retro-container">
+        <h1>STATION: STUDY TRACKER</h1>
+        
+        <div class="input-form">
+            <div class="field">
+                <label for="subjectInput">SUBJECT:</label>
+                <input type="text" id="subjectInput" placeholder="e.g. Data Structures">
+            </div>
+            <div class="field">
+                <label for="durationInput">DURATION (MINS):</label>
+                <input type="number" id="durationInput" placeholder="60">
+            </div>
+            <div class="field">
+                <label for="notesInput">SESSION NOTES:</label>
+                <textarea id="notesInput" placeholder="What did you learn?"></textarea>
+            </div>
+            <button id="submitBtn" class="retro-button">LOG SESSION</button>
+        </div>
+        <hr>
+            <div id="logOutput">
+                <h3>LOG HISTORY</h3>
+                <ul id="sessionList">
+                    </ul>
+            </div>
+        </div>
+
+    </form>
+
+    <script src="studyTracker.js"></script>
+</body>
+</html>
