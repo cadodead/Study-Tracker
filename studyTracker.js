@@ -12,39 +12,27 @@ const renderSession = () => {
         // The code above is for clearing content.
         retrievedSessions.forEach((session) => {
             const li = document.createElement('li');
+            // —————————— April 28th ——————————
+            // Proposed Solution 1:
+            // const deleteButton = document.createElement("button");
+                // how do we set button.dataset.index = index using DOM?
+            // deleteButton.dataset.index = (?)
+            // li.append(deleteButton);
             li.textContent = `${session.sub} - ${session.time} mins - ${session.note}`;
             sessions.append(li);
-    // —————————————April 27th, 2026—————————————
-        // innerHTML is the property — not a method so no (). To clear the list, set it to empty.
-        // One line, inside renderSession before the forEach. What would that look like?
-        // On validation — yes, a conditional. Before existingData.push(formData), 
-        // check if subject.value is empty. If it is, don't push, maybe just return early.
-        // Write both fixes — innerHTML clear first, then the conditional guard. Attempt it.
         })} 
-    // ——————————————————————————————————————————
+    
 buttonLog.addEventListener("click", (event) =>{
     console.log({
         sub:subject.value,
         time: duration.value,
         note: notes.value        
-//  —————————— April 28th ——————————
-    // Then today's only goal:
-    // Add the validation guard. Inside the buttonLog listener, 
-    // before existingData.push(formData), write a conditional that checks 
-    // if subject.value is empty and stops the save if it is.
-    // Before writing it - what does an empty input 
-    // field's .value actually equal? And what keyword 
-    // stops a function from continuing early?
-        // — An empty input field is equal to '[]', a null?
-        // — What stops a value is 'return'?
-// —————————————————————————————————
     });
-
     const formData = {
         sub:subject.value,
         time: duration.value,
         note: notes.value
-    } //Why not can't I just use formData? Can't I use it like this 'formData.value'? ← !THIS DOES NOT WORK!
+    } 
  
     const existingData = JSON.parse(localStorage.getItem('userForm')) || [];
         if(subject.value === ""){
@@ -61,3 +49,23 @@ buttonLog.addEventListener("click", (event) =>{
 });
 
 renderSession();
+//  —————————— April 28th ——————————
+    // retrievedSessions.forEach((session, index) => {
+    // Now you have the index. The question is how to attach 
+    // it to the button so when it's clicked, it knows which one it is.
+    // HTML elements have something called data attributes — you can 
+    // store custom info directly on an element like this:
+    // html<button data-index="2">Delete</button>
+    // Then in JS you can read it back with button.dataset.index.
+
+    // So your task inside renderSession's forEach, for each session:
+
+    // Create a delete button
+    // 
+    // Append the button to the li
+
+    // Then separately, add a click listener to that button that reads 
+    // dataset.index and deletes the right session. Before writing — describe back to me 
+    // in plain English what the delete listener needs to 
+    // do with that index once it has it. Three steps, you listed them earlier.
+//  ————————————————————————————————
