@@ -5,31 +5,59 @@ const buttonLog = document.getElementById("submitBtn");
 const buttonReset = document.getElementById("resetButton"); 
 const sessions = document.getElementById("sessionList");
 
-
+const renderSession = () => {
+        const retrievedSessions = JSON.parse(localStorage.getItem('userForm')) || [];
+        // This is a syntax for clearing content.
+        sessions.innerHTML = "";
+        // The code above is for clearing content.
+        retrievedSessions.forEach((session) => {
+            const li = document.createElement('li');
+            li.textContent = `${session.sub} - ${session.time} mins - ${session.note}`;
+            sessions.append(li);
+    // —————————————April 27th, 2026—————————————
+        // innerHTML is the property — not a method so no (). To clear the list, set it to empty.
+        // One line, inside renderSession before the forEach. What would that look like?
+        // On validation — yes, a conditional. Before existingData.push(formData), 
+        // check if subject.value is empty. If it is, don't push, maybe just return early.
+        // Write both fixes — innerHTML clear first, then the conditional guard. Attempt it.
+        })} 
+    // ——————————————————————————————————————————
 buttonLog.addEventListener("click", (event) =>{
     console.log({
         sub:subject.value,
         time: duration.value,
-        note: notes.value
+        note: notes.value        
+//  —————————— April 28th ——————————
+    // Then today's only goal:
+    // Add the validation guard. Inside the buttonLog listener, 
+    // before existingData.push(formData), write a conditional that checks 
+    // if subject.value is empty and stops the save if it is.
+    // Before writing it - what does an empty input 
+    // field's .value actually equal? And what keyword 
+    // stops a function from continuing early?
+        // — An empty input field is equal to '[]', a null?
+        // — What stops a value is 'return'?
+// —————————————————————————————————
     });
-   
+
     const formData = {
         sub:subject.value,
         time: duration.value,
         note: notes.value
-    }
-    // Trace the code to enhance my intuition.
-    const existingData = JSON.parse(localStorage.getItem('userForm')) || []; // So I did some digging at Google,
-    //"This attempts to retrieve a value associated with the key 'userForm'", so userForm in this context is just some predefined variable?
-    existingData.push(formData); //How do you phrase this? Are we pushing existingData into formData or is it the opposite?
-    localStorage.setItem('userForm', JSON.stringify(existingData)); //With the key "userForm"/existingData, we stringfy it so that we can pass it into the localStorage.
+    } //Why not can't I just use formData? Can't I use it like this 'formData.value'? ← !THIS DOES NOT WORK!
+ 
+    const existingData = JSON.parse(localStorage.getItem('userForm')) || [];
+        if(subject.value === ""){
+            return;
+        } 
+    existingData.push(formData); 
+    localStorage.setItem('userForm', JSON.stringify(existingData));
+     
     event.preventDefault(); 
     subject.value = "";
     duration.value = "";
-    notes.value = "";
-})
-// Here's another question, if building projects is the "best" approach for learning programming, then what is the right headspace/ work flow/ approach to a problem during that session of coding? 
-   
-// The display feature is actually the most satisfying one — you'll finally see your data on the page instead of just in DevTools.
-// Before writing anything, plain English first: you have an array of session objects sitting in localStorage. How do you think you'd get them showing up as a list on the page?
-// Think about what HTML element holds a list, and what JS tool you'd use to loop through the array and create each item. You've seen both before.
+    notes.value = "";    
+    renderSession();
+});
+
+renderSession();
