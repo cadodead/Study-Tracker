@@ -10,18 +10,41 @@ const renderSession = () => {
         // This is a syntax for clearing content.
         sessions.innerHTML = "";
         // The code above is for clearing content.
-        retrievedSessions.forEach((session) => {
+        retrievedSessions.forEach((session, index) => {
             const li = document.createElement('li');
-            // —————————— April 28th ——————————
-            // Proposed Solution 1:
-            // const deleteButton = document.createElement("button");
-                // how do we set button.dataset.index = index using DOM?
-            // deleteButton.dataset.index = (?)
-            // li.append(deleteButton);
             li.textContent = `${session.sub} - ${session.time} mins - ${session.note}`;
             sessions.append(li);
+            // —————————— April 29th ——————————
+                // Read the index — deleteButton.dataset.index gives you 
+                // a string, so wrap it in Number() to convert it
+                // Filter the array — get from localStorage, parse 
+                // it, filter out the item at that index
+                // Save and redraw — stringify, setItem, 
+                // call renderSession()
+            // —————————— April 29th ——————————
+            const deleteButton = document.createElement("button");// I should add an ID just in case.
+            deleteButton.innerText = "Delete";
+            deleteButton.id = "button-delete";
+            li.append(deleteButton);
+            const currentIdx = Number(deleteButton.dataset.index);//"You want to keep every session except the one at currentIdx.", why?
+            //—————————————————————————————————
+            
+            deleteButton.addEventListener("click", (event1) =>{
+                deleteButton.dataset.index = index;
+                    // Code interpretation:
+                        // — So each session presents an index.
+                        // — we convert it to an actual number because initally it was in a string format
+                        // — "deleteSession"'s value is filtering filterArray(an array).
+                        // — What does 'item' represent? a copy of our session? is its index not equal to currentIdx.
+                        // — and in our case currentIdx is equal to the number format of 'dataset.index'.
+                const storedData = (localStorage.getItem('userForm'));// How to use filter() in this context?
+                const filterArray = storedData ? JSON.parse(storedData) : [];
+                const deleteSession = filterArray.filter((item, i) => i !== currentIdx);//"keep only items where the index is NOT the one we're deleting."
+                localStorage.setItem('userForm', JSON.stringify(deleteSession));
+                renderSession();
+            })
         })} 
-    
+            // —————————— April 29th ——————————
 buttonLog.addEventListener("click", (event) =>{
     console.log({
         sub:subject.value,
@@ -49,23 +72,3 @@ buttonLog.addEventListener("click", (event) =>{
 });
 
 renderSession();
-//  —————————— April 28th ——————————
-    // retrievedSessions.forEach((session, index) => {
-    // Now you have the index. The question is how to attach 
-    // it to the button so when it's clicked, it knows which one it is.
-    // HTML elements have something called data attributes — you can 
-    // store custom info directly on an element like this:
-    // html<button data-index="2">Delete</button>
-    // Then in JS you can read it back with button.dataset.index.
-
-    // So your task inside renderSession's forEach, for each session:
-
-    // Create a delete button
-    // 
-    // Append the button to the li
-
-    // Then separately, add a click listener to that button that reads 
-    // dataset.index and deletes the right session. Before writing — describe back to me 
-    // in plain English what the delete listener needs to 
-    // do with that index once it has it. Three steps, you listed them earlier.
-//  ————————————————————————————————
