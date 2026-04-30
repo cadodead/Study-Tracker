@@ -14,37 +14,23 @@ const renderSession = () => {
             const li = document.createElement('li');
             li.textContent = `${session.sub} - ${session.time} mins - ${session.note}`;
             sessions.append(li);
-            // —————————— April 29th ——————————
-                // Read the index — deleteButton.dataset.index gives you 
-                // a string, so wrap it in Number() to convert it
-                // Filter the array — get from localStorage, parse 
-                // it, filter out the item at that index
-                // Save and redraw — stringify, setItem, 
-                // call renderSession()
-            // —————————— April 29th ——————————
-            const deleteButton = document.createElement("button");// I should add an ID just in case.
+            const deleteButton = document.createElement("button");
             deleteButton.innerText = "Delete";
             deleteButton.id = "button-delete";
             li.append(deleteButton);
-            const currentIdx = Number(deleteButton.dataset.index);//"You want to keep every session except the one at currentIdx.", why?
+            deleteButton.dataset.index = index;
+            const currentIdx = Number(deleteButton.dataset.index);
             //—————————————————————————————————
             
             deleteButton.addEventListener("click", (event1) =>{
-                deleteButton.dataset.index = index;
-                    // Code interpretation:
-                        // — So each session presents an index.
-                        // — we convert it to an actual number because initally it was in a string format
-                        // — "deleteSession"'s value is filtering filterArray(an array).
-                        // — What does 'item' represent? a copy of our session? is its index not equal to currentIdx.
-                        // — and in our case currentIdx is equal to the number format of 'dataset.index'.
-                const storedData = (localStorage.getItem('userForm'));// How to use filter() in this context?
+                const storedData = (localStorage.getItem('userForm'));
                 const filterArray = storedData ? JSON.parse(storedData) : [];
-                const deleteSession = filterArray.filter((item, i) => i !== currentIdx);//"keep only items where the index is NOT the one we're deleting."
+                const deleteSession = filterArray.filter((item, i) => i !== currentIdx);
                 localStorage.setItem('userForm', JSON.stringify(deleteSession));
                 renderSession();
             })
         })} 
-            // —————————— April 29th ——————————
+            
 buttonLog.addEventListener("click", (event) =>{
     console.log({
         sub:subject.value,
@@ -72,3 +58,15 @@ buttonLog.addEventListener("click", (event) =>{
 });
 
 renderSession();
+// #Things to work on this April 30th:
+    // const currentIdx = Number(deleteButton.dataset.index);
+    // then later inside the click listener:
+    // deleteButton.dataset.index = index;
+    // You're reading dataset.index before you've set it. So currentIdx is always NaN.
+    // Swap those two lines. Set deleteButton.dataset.index = index first, then read it with Number(deleteButton.dataset.index).
+    // Fix that one line order and test it. Does delete work?
+
+// Tip:
+    // Lesson to remember: When you see X is not a function on an array method like
+    // forEach, first ask — is what I'm calling it on actually an array?
+    // In this case it wasn't, and the culprit was bad data, not bad code.
