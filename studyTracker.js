@@ -58,15 +58,32 @@ buttonLog.addEventListener("click", (event) =>{
 });
 
 renderSession();
-// #Things to work on this April 30th:
-    // const currentIdx = Number(deleteButton.dataset.index);
-    // then later inside the click listener:
-    // deleteButton.dataset.index = index;
-    // You're reading dataset.index before you've set it. So currentIdx is always NaN.
-    // Swap those two lines. Set deleteButton.dataset.index = index first, then read it with Number(deleteButton.dataset.index).
-    // Fix that one line order and test it. Does delete work?
+// ==============================================
+// STUDY TRACKER V1 — CODE SUMMARY
+// April 2026
+// ==============================================
 
-// Tip:
-    // Lesson to remember: When you see X is not a function on an array method like
-    // forEach, first ask — is what I'm calling it on actually an array?
-    // In this case it wasn't, and the culprit was bad data, not bad code.
+// ARCHITECTURE:
+// This project has two natural layers:
+// - Data layer: localStorage operations (get, parse, push, stringify, setItem)
+// - UI layer: DOM operations (renderSession, createElement, append)
+// Both live in one file at V1 scale — acceptable for now.
+
+// KEY CONCEPTS USED:
+// - document.getElementById() — grabs DOM elements by ID
+// - addEventListener() — listens for user interactions
+// - event.preventDefault() — stops form from refreshing the page
+// - localStorage.setItem/getItem — browser's built-in persistent storage
+// - JSON.stringify/parse — converts objects↔strings for localStorage
+// - || [] — safeguard fallback when localStorage returns null
+// - Array.push() — adds new session to existing array
+// - Array.filter() — creates new array excluding deleted session
+// - forEach((item, index)) — loops with access to each item's position
+// - document.createElement() — creates new DOM elements dynamically
+// - element.append() — adds elements into the DOM
+// - element.innerHTML = "" — clears DOM content before re-rendering
+// - dataset.index — attaches custom data to a DOM element
+// - Number() — converts string index from dataset back to a number
+// - Validation guard: if(value === "") return — stops empty submissions
+// - Scope — functions defined outside listeners are accessible everywhere
+// ==============================================
