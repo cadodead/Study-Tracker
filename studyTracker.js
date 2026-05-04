@@ -10,6 +10,7 @@ const renderSession = () => {
         // This is a syntax for clearing content.
         sessions.innerHTML = "";
         // The code above is for clearing content.
+
         retrievedSessions.forEach((session, index) => {
             const li = document.createElement('li');
             li.textContent = `${session.sub} - ${session.time} mins - ${session.note}`;
@@ -19,9 +20,7 @@ const renderSession = () => {
             deleteButton.id = "button-delete";
             li.append(deleteButton);
             deleteButton.dataset.index = index;
-            const currentIdx = Number(deleteButton.dataset.index);
-            //—————————————————————————————————
-            
+            const currentIdx = Number(deleteButton.dataset.index);      
             deleteButton.addEventListener("click", (event1) =>{
                 const storedData = (localStorage.getItem('userForm'));
                 const filterArray = storedData ? JSON.parse(storedData) : [];
@@ -29,8 +28,14 @@ const renderSession = () => {
                 localStorage.setItem('userForm', JSON.stringify(deleteSession));
                 renderSession();
             })
-        })} 
-            
+        }  
+    )
+                const totalHours = retrievedSessions.reduce((acc, curr) => acc + Number(curr.time), 0);
+                const hourCounter = document.createElement("div");  
+                hourCounter.textContent = `${totalHours}`;
+                sessions.append(hourCounter); 
+}          
+ 
 buttonLog.addEventListener("click", (event) =>{
     console.log({
         sub:subject.value,
@@ -58,32 +63,9 @@ buttonLog.addEventListener("click", (event) =>{
 });
 
 renderSession();
-// ==============================================
-// STUDY TRACKER V1 — CODE SUMMARY
-// April 2026
-// ==============================================
 
-// ARCHITECTURE:
-// This project has two natural layers:
-// - Data layer: localStorage operations (get, parse, push, stringify, setItem)
-// - UI layer: DOM operations (renderSession, createElement, append)
-// Both live in one file at V1 scale — acceptable for now.
-
-// KEY CONCEPTS USED:
-// - document.getElementById() — grabs DOM elements by ID
-// - addEventListener() — listens for user interactions
-// - event.preventDefault() — stops form from refreshing the page
-// - localStorage.setItem/getItem — browser's built-in persistent storage
-// - JSON.stringify/parse — converts objects↔strings for localStorage
-// - || [] — safeguard fallback when localStorage returns null
-// - Array.push() — adds new session to existing array
-// - Array.filter() — creates new array excluding deleted session
-// - forEach((item, index)) — loops with access to each item's position
-// - document.createElement() — creates new DOM elements dynamically
-// - element.append() — adds elements into the DOM
-// - element.innerHTML = "" — clears DOM content before re-rendering
-// - dataset.index — attaches custom data to a DOM element
-// - Number() — converts string index from dataset back to a number
-// - Validation guard: if(value === "") return — stops empty submissions
-// - Scope — functions defined outside listeners are accessible everywhere
-// ==============================================
+//—————————May 1, 2026—————————
+// # Tips:
+    // a TypeError is a specific kind of runtime error that
+    // occurs when an operation cannot be performed 
+    // because a value is not of the expected type
