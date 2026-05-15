@@ -42,17 +42,6 @@ titleText.insertAdjacentElement("afterend", authorHeader) // this is for the AH.
 titleText.insertAdjacentElement("afterend", bookHeader); // this is for the BH.
 titleText.insertAdjacentElement("afterend", quoteHeader); // this is for the TQ.
 
-
-//Good progress. Two things:
-// Quote is displaying, null book shows "unknown" — that's working.
-    // Two things still missing:
-    // 1. No author displaying. You never created an element for selectedQuotes.author. That's your next small task.
-        // — 
-    // 2. Order is wrong — "unknown" appears above the quote. Look at your code: you're inserting bookHeader first, 
-    // then quoteHeader, both afterend the h1. They're stacking in insertion order.
-    // Think about it — if you insert A after the h1, then insert B after the h1, what order do they end up in?
-    // Fix the author first, then we'll sort out the ordering.
-
 //—————————————————————————————————————————————————————————————————————————
 //—————————————————————————————————————————————————————————————————————————
 const subject = document.getElementById("subjectInput");
@@ -61,11 +50,11 @@ const notes = document.getElementById("notesInput");
 const buttonLog = document.getElementById("submitBtn");
 const buttonReset = document.getElementById("resetButton"); 
 const sessions = document.getElementById("sessionList");
+const dataListContainer = document.getElementById("subjects");
 
 const renderSession = () => {
-        const retrievedSessions = JSON.parse(localStorage.getItem('userForm')) || [];        
-        sessions.innerHTML = "";
-        
+        const retrievedSessions = JSON.parse(localStorage.getItem('userForm')) || [];
+        sessions.innerHTML = ""; // We had this because if we didn't — each log of sessions would iterating with the entire list with new one appended.
         retrievedSessions.forEach((session, index) => {
             const li = document.createElement('li');
             li.textContent = `${session.sub} - ${session.time} mins - ${session.note}`;
@@ -92,6 +81,21 @@ const renderSession = () => {
 }          
 //—————————————————————————————————————————————————————————————————————————
 //—————————————————————————————————————————————————————————————————————————
+
+const renderDataList = () =>{
+        const storedData = JSON.parse(localStorage.getItem('userForm')) || [];
+        const noDuplicates = [...new Set(storedData.map(sub => sub.sub))];
+        dataListContainer.innerHTML = ""; // We had this because if we didn't — each log of sessions would iterating with the entire list with new one appended.
+
+        noDuplicates.forEach(sub =>{
+            const optionContainer = document.createElement("option");
+            optionContainer.textContent = `${sub}`;
+            dataListContainer.append(optionContainer); 
+        })
+}  
+renderDataList();
+//—————————————————————————————————————————————————————————————————————————
+//—————————————————————————————————————————————————————————————————————————
 buttonLog.addEventListener("click", (event) =>{
     console.log({
         sub:subject.value,
@@ -116,7 +120,9 @@ buttonLog.addEventListener("click", (event) =>{
     duration.value = "";
     notes.value = "";    
     renderSession();
+    renderDataList();
 });
 
 renderSession();
+renderDataList();
 //—————————————————————————————————————————————————————————————————————————

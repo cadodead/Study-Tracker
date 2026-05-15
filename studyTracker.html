@@ -10,13 +10,16 @@
 
     <form id="myForm">
         <div class="retro-container">
-        <h1 id="h1Element">STATION: STUDY TRACKER</h1>
-        
+        <h1 id="h1Element">CADO'S TRACKER</h1>
+        <!-- SOMETHING WAS MODIFIED HERE IN MAY 10, 2026 -->
         <div class="input-form">
             <div class="field">
                 <label for="subjectInput">SUBJECT:</label>
-                <input type="text" id="subjectInput" placeholder="e.g. Data Structures">
+                <input list="subjects" name="subject" type="text" id="subjectInput" placeholder="e.g. Data Structures">
+                <datalist id="subjects">
+                </datalist>
             </div>
+        <!-- SOMETHING WAS MODIFIED HERE IN MAY 10, 2026 -->
             <div class="field">
                 <label for="durationInput">DURATION (MINS):</label>
                 <input type="number" id="durationInput" placeholder="60">
